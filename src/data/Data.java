@@ -1,12 +1,14 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum Data {
 	INSTANCE;
 	
-	protected List<Document> docs = new ArrayList<>();
+	protected Map<String, Adresar> docs = new HashMap<>();
+	
+	
 	
 
 }

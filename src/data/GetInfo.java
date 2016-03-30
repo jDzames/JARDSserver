@@ -9,8 +9,10 @@ import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Path("/data")
+@Path("/info")
 public class GetInfo {
+	
+	private Data data = Data.INSTANCE;
 
 	@Path("{folder}/{filter}/q=describe")
 	@GET
@@ -18,13 +20,22 @@ public class GetInfo {
 	public Response describeFolderFilter(@PathParam("folder") String folder, 
 			@PathParam("filter") String filter) throws JSONException {
 
+		Adresar adresar = data.docs.get(folder);
+		if (adresar == null) {
+			return Response.status(404).entity("Unknown folder").build();
+		}
+		Filter filt = adresar.getFilter(filter);
+		if (filt == null) {
+			return Response.status(404).entity("Unknown filter").build();
+		}
+		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("root", "");
-		jsonObject.put("changed", "10");
-		jsonObject.put("invalidated", "");
-		jsonObject.put("schema", "");
-		jsonObject.put("readonly", "");
-		jsonObject.put("id-generator", "");
+		jsonObject.put("root", adresar.getRoot());
+		jsonObject.put("changed", adresar.getChanged().toString());
+		jsonObject.put("invalidated", adresar.isInvalidated());
+		jsonObject.put("schema", adresar.getSchema());
+		jsonObject.put("readonly", adresar.isReadOnly());
+		jsonObject.put("id-generator", adresar.getIdGenerator());
 
 		//tie stringy asi este vymazat
 		String result = "@Produces(\"application/json\") Description \n" + jsonObject;
@@ -36,13 +47,18 @@ public class GetInfo {
 	@Produces("application/json")
 	public Response describeFolder(@PathParam("folder") String folder) throws JSONException {
 
+		Adresar adresar = data.docs.get(folder);
+		if (adresar == null) {
+			return Response.status(404).entity("Unknown folder").build();
+		}
+		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("root", "");
-		jsonObject.put("changed", "10");
-		jsonObject.put("invalidated", "");
-		jsonObject.put("schema", "");
-		jsonObject.put("readonly", "");
-		jsonObject.put("id-generator", "");
+		jsonObject.put("root", adresar.getRoot());
+		jsonObject.put("changed", adresar.getChanged().toString());
+		jsonObject.put("invalidated", adresar.isInvalidated());
+		jsonObject.put("schema", adresar.getSchema());
+		jsonObject.put("readonly", adresar.isReadOnly());
+		jsonObject.put("id-generator", adresar.getIdGenerator());
 
 		//tie stringy asi este vymazat
 		String result = "@Produces(\"application/json\") Description \n" + jsonObject;
@@ -55,13 +71,19 @@ public class GetInfo {
 	public Response stateOfFolderFilter(@PathParam("folder") String folder, 
 			@PathParam("filter") String filter) throws JSONException {
 
+		Adresar adresar = data.docs.get(folder);
+		if (adresar == null) {
+			return Response.status(404).entity("Unknown folder").build();
+		}
+		Filter filt = adresar.getFilter(filter);
+		if (filt == null) {
+			return Response.status(404).entity("Unknown filter").build();
+		}
+		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("root", "");
-		jsonObject.put("changed", "10");
-		jsonObject.put("invalidated", "");
-		jsonObject.put("schema", "");
-		jsonObject.put("readonly", "");
-		jsonObject.put("id-generator", "");
+		jsonObject.put("root", adresar.getRoot());
+		jsonObject.put("changed", adresar.getChanged().toString());
+		jsonObject.put("invalidated", adresar.isInvalidated());
 
 		//tie stringy asi este vymazat
 		String result = "@Produces(\"application/json\") State \n" + jsonObject;
@@ -73,13 +95,15 @@ public class GetInfo {
 	@Produces("application/json")
 	public Response stateOfFolder(@PathParam("folder") String folder) throws JSONException {
 
+		Adresar adresar = data.docs.get(folder);
+		if (adresar == null) {
+			return Response.status(404).entity("Unknown folder").build();
+		}
+		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("root", "");
-		jsonObject.put("changed", "10");
-		jsonObject.put("invalidated", "");
-		jsonObject.put("schema", "");
-		jsonObject.put("readonly", "");
-		jsonObject.put("id-generator", "");
+		jsonObject.put("root", adresar.getRoot());
+		jsonObject.put("changed", adresar.getChanged().toString());
+		jsonObject.put("invalidated", adresar.isInvalidated());
 
 		//tie stringy asi este vymazat
 		String result = "@Produces(\"application/json\") State \n" + jsonObject;
