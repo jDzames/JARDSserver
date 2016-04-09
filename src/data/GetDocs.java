@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,65 +22,29 @@ public class GetDocs {
 	
 	
 	public GetDocs() {
-		Adresar folder = new Adresar("auta", true, "JSON", false, "UUID random");
+		Adresar folder = new Adresar("auta", true, "JSON",(new Date()).getTime(), false, "UUID random");
 		Filter filter = new Filter();
 		List<Document> listFilt = new ArrayList<>();
 		List<Document> listFold = new ArrayList<>();
 		
 		JSONObject json = new JSONObject();
 		json.put("znacka", "mercedes");
-		Document d = new Document(UUID.randomUUID(), "mercedes", json);
+		Document d = new Document(UUID.randomUUID(), 012, false, "mercedes", json);
 		listFilt.add(d);
 		listFold.add(d);
 		
 		json = new JSONObject();
 		json.put("znacka", "audi");
-		d = new Document(UUID.randomUUID(), "audi", json);
+		d = new Document(UUID.randomUUID(), 1502, false, "audi", json);
 		listFold.add(d);
 		
 		filter.setDocuments(listFilt);
 		folder.addFilter("mercedes", filter);
-		folder.setDocuments(listFold);
+		folder.setDocumentsList(listFold);
 		
 		data.docs.put("cars", folder);
 	}
 
-	@Path("{folder}/{filter}/")
-	@GET
-	@Produces("application/json")
-	public Response dataFromFilter(@PathParam("folder") String folder, 
-			@PathParam("filter") String filter) throws JSONException {
-
-		Adresar adresar = data.docs.get(folder);
-		if (adresar == null) {
-			return Response.status(404).entity("Unknown folder").build();
-		}
-		Filter filt = adresar.getFilter(filter);
-		if (filt == null) {
-			return Response.status(404).entity("Unknown filter").build();
-		}
-		
-		List<Document> docs = filt.getDocuments();
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("changed", adresar.getChanged().toString());
-		jsonObject.put("invalidated", adresar.isInvalidated());
-		JSONObject jsonData = new JSONObject();
-		for (int i = 0; i < docs.size(); i++) {
-			Document d = docs.get(i);
-			
-			JSONObject jsonDoc = new JSONObject();
-			jsonDoc.put("changed", d.getCreatedDate().toString());
-			jsonDoc.put("deleted", d.isDeleted());
-			jsonDoc.put("content", d.getJson());
-			
-			jsonData.put(""+d.getId(), jsonDoc);
-		}
-		jsonObject.put("documents", jsonData);
-
-		//tie stringy asi este vymazat.
-		String result = /*"@Produces(\"application/json\") Description \n" +*/ ""+jsonObject;
-		return Response.status(200).entity(result).build();
-	}
 
 	@Path("{folder}/")
 	@GET
@@ -92,7 +57,7 @@ public class GetDocs {
 			return Response.status(404).entity("Unknown folder").build();
 		}
 		
-		List<Document> docs = adresar.getDocuments();
+		List<Document> docs = adresar.getDocumentsList();
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("changed", adresar.getChanged().toString());
 		jsonObject.put("invalidated", adresar.isInvalidated());
@@ -100,8 +65,12 @@ public class GetDocs {
 		for (int i = 0; i < docs.size(); i++) {
 			Document d = docs.get(i);
 			
+			if (d.isDeleted()) {
+				continue;
+			}
+			
 			JSONObject jsonDoc = new JSONObject();
-			jsonDoc.put("changed", d.getCreatedDate().toString());
+			jsonDoc.put("changed", d.getDate().toString());
 			jsonDoc.put("deleted", d.isDeleted());
 			jsonDoc.put("content", d.getJson());
 			

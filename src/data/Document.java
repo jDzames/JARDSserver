@@ -11,15 +11,15 @@ public class Document {
 	private String data;
 	private JSONObject json;
 	private boolean deleted;
-	private Date createdDate;
+	private Date date;
 	
-	public Document(UUID id, String data, JSONObject json) {
+	public Document(UUID id, long date, boolean deleted, String data, JSONObject json) {
 		super();
 		this.id = id;
 		this.data = data;
 		this.json = json;
-		this.deleted = false;
-		this.createdDate = new Date();
+		this.deleted = deleted;
+		this.date = new Date(date);
 	}
 	
 	public UUID getId() {
@@ -42,8 +42,25 @@ public class Document {
 		this.deleted = deleted;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public Date getDate() {
+		return date;
 	}
+	
+	public void setDate(Date updateDate){
+		this.date = updateDate;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public void setJson(JSONObject json) {
+		this.json = json;
+	}
+	
 	
 }

@@ -40,26 +40,24 @@ public class TestDBConnection {
 			Statement stmt = c.createStatement();
 
 			// CREATE TABLE
-			/*String sql = "CREATE TABLE public.test ( "
-					+ "id uuid NOT NULL, changed date, deleted boolean, content text, json json, "
+			/*String csql = "CREATE TABLE public.test ( "
+					+ "id uuid NOT NULL, changed bigint, deleted boolean, content text, json json, "
 					+ "CONSTRAINT test_pkey PRIMARY KEY (id) ) "
 					+ "WITH ( OIDS=FALSE ); "
 					+ "ALTER TABLE public.test OWNER TO jards; ";
 			
-			stmt.executeUpdate(sql);
+			stmt.executeUpdate(csql);
 			stmt.close();*/
 
 			// INSERT
-			stmt = c.createStatement();
+			/*stmt = c.createStatement();
 			String sql = "INSERT INTO test (id,changed,deleted,content,json) " + "VALUES(?,?,?,?,?);";
 			int nthPlaceholder = 1; // 1-based counting (not an index).
 			PreparedStatement preparedStatement = c.prepareStatement(sql);
-
+		
 			preparedStatement.setObject(nthPlaceholder++, UUID.randomUUID());
-			PGobject dateObject = new PGobject();
-			dateObject.setType("date");
-			dateObject.setValue(new Date().toString());
-			preparedStatement.setObject(nthPlaceholder++, dateObject);
+			Date d = new Date();
+			preparedStatement.setObject(nthPlaceholder++, d.getTime());
 			preparedStatement.setObject(nthPlaceholder++, false);
 			preparedStatement.setObject(nthPlaceholder++, "obsah testovaci");
 			PGobject jsonObject = new PGobject();
@@ -70,8 +68,17 @@ public class TestDBConnection {
 			if (!(preparedStatement.executeUpdate() == 1)) {
 				// If the SQL reports other than one row inserted…
 				System.out.println("asi chyba");
-			}
+			}*/
 
+			
+			// INSERT 2
+			/*stmt = c.createStatement();
+			String sql = "INSERT INTO MyCollectionsT (root,changed,invalidated,schema,readonly,idgenerator) " + 
+			"VALUES('test',1459936458275,true,'json',false,'UUID');";
+			stmt.execute(sql);*/
+
+			
+			
 			// SELECT
 			ResultSet rs = stmt.executeQuery("SELECT * FROM test;");
 			while (rs.next()) {
@@ -88,3 +95,25 @@ public class TestDBConnection {
 	}
 
 }
+
+
+/*
+  
+  CREATE TABLE public."mycollectionst"
+(
+   root text, 
+   changed bigint, 
+   invalidated boolean, 
+   schema text, 
+   readonly boolean, 
+   idgenerator text, 
+   PRIMARY KEY (root)
+) 
+WITH (
+  OIDS = FALSE
+)
+;
+ALTER TABLE public."mycollectionst"
+  OWNER TO jards;
+  
+ */

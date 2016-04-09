@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 
 /**
@@ -22,15 +24,15 @@ public class Adresar {
 	
 	private Map<String, Filter> filters = new HashMap<>();
 	
-	private List<Document> docs = new ArrayList<>();
+	private Map<UUID, Document> docs = new HashMap<>();
 	
 	
 
-	public Adresar(String root, boolean invalidated, String schema, boolean readOnly,
+	public Adresar(String root, boolean invalidated, String schema, long changed, boolean readOnly,
 			String idGenerator) {
 		super();
 		this.root = root;
-		this.changed = new Date();
+		this.changed = new Date(changed);
 		this.invalidated = invalidated;
 		this.schema = schema;
 		this.readOnly = readOnly;
@@ -93,17 +95,26 @@ public class Adresar {
 		this.filters.put(name, filter);
 	}
 	
-	public List<Document> getDocuments() {
-		return docs;
+	public List<Document> getDocumentsList() {
+		return new ArrayList<>(docs.values());
 	}
 	
-	
-	public void setDocuments(List<Document> docs) {
+	public void setDocuments(Map<UUID, Document> docs) {
 		this.docs = docs;
+	}
+	
+	public void setDocumentsList(List<Document> docs) {
+		for (int i = 0; i < docs.size(); i++) {
+			addDocument(docs.get(i));
+		}
 	}
 
 	public void addDocument(Document doc) {
-		this.docs.add(doc);
+		this.docs.put(doc.getId(), doc);
+	}
+	
+	public Document getDocument(UUID id){
+		return docs.get(id);
 	}
 	
 }
