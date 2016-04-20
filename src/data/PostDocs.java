@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 @Path("/post")
 public class PostDocs {
@@ -88,7 +87,7 @@ public class PostDocs {
 			}
 		}
 		
-		Data.INSTANCE.saveDocumentsIntoDB(newDocuments, deletedDocuments, updatedDocuments);
+		Data.INSTANCE.saveDocumentsIntoDB(adresar, newDocuments, deletedDocuments, updatedDocuments);
 		
 		return Response.status(201).entity("OK").build(); 
 	}

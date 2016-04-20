@@ -26,6 +26,7 @@ public class LoadDataOnStart implements ServletContextListener{
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		//otvor pripojenie a nacitaj data
+		Data.INSTANCE.openDB();
 		Data.INSTANCE.readDB();
 		
 	}
