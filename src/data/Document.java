@@ -9,19 +9,28 @@ public class Document {
 
 	private UUID id;
 	private String data;
-	private JSONObject json;
+	private JSONObject content;
 	private boolean deleted;
-	private Date date;
+	//private Date date;
+	private long changed; 
 	
-	public Document(UUID id, long date, boolean deleted, String data, JSONObject json) {
+	public Document(UUID id, long changed, boolean deleted, String data, JSONObject json) {
 		super();
 		this.id = id;
 		this.data = data;
-		this.json = json;
+		this.content = json;
 		this.deleted = deleted;
-		this.date = new Date(date);
+		this.changed = changed;
 	}
 	
+	public long getChanged() {
+		return changed;
+	}
+
+	public void setChanged(long changed) {
+		this.changed = changed;
+	}
+
 	public UUID getId() {
 		return id;
 	}
@@ -30,8 +39,8 @@ public class Document {
 		return data;
 	}
 
-	public JSONObject getJson() {
-		return json;
+	public JSONObject getContent() {
+		return content;
 	}
 
 	public boolean isDeleted() {
@@ -42,13 +51,13 @@ public class Document {
 		this.deleted = deleted;
 	}
 
-	public Date getDate() {
+	/*public Date getDate() {
 		return date;
 	}
 	
 	public void setDate(Date updateDate){
 		this.date = updateDate;
-	}
+	}*/
 
 	public void setId(UUID id) {
 		this.id = id;
@@ -58,8 +67,8 @@ public class Document {
 		this.data = data;
 	}
 
-	public void setJson(JSONObject json) {
-		this.json = json;
+	public void setContent(JSONObject json) {
+		this.content = json;
 	}
 	
 	

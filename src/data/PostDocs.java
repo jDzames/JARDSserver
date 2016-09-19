@@ -64,7 +64,7 @@ public class PostDocs {
 				}
 				doc.setDeleted(true);
 				//mozno riesit neskorsi cas..? math.max?
-				doc.setDate(new Date(syncedDocDate));
+				doc.setChanged(syncedDocDate);
 				deletedDocuments.add(doc);
 			} else if (newDoc) {
 				Document doc = new Document(
@@ -80,9 +80,9 @@ public class PostDocs {
 				}
 				doc.setData(docJson.getString("content"));
 				//math max..?
-				doc.setDate(new Date(syncedDocDate));
+				doc.setChanged(syncedDocDate);
 				doc.setDeleted(delete);
-				doc.setJson(docJson);
+				doc.setContent(docJson);
 				updatedDocuments.add(doc);
 			}
 		}

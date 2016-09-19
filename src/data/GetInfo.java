@@ -16,7 +16,7 @@ public class GetInfo {
 	private Data data = Data.INSTANCE;
 
 
-	@Path("/{folder}")
+	@Path("{folder}/")
 	@GET
 	@Produces("application/json")
 	public Response getInfo(@PathParam("folder") String folder, 
@@ -30,7 +30,7 @@ public class GetInfo {
 		if ("status".equals(queryParam)) {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("root", adresar.getRoot());
-			jsonObject.put("changed", adresar.getChanged().toString());
+			jsonObject.put("changed", adresar.getChanged());
 			jsonObject.put("invalidated", adresar.isInvalidated());
 
 			String result = "" + jsonObject;
@@ -39,7 +39,7 @@ public class GetInfo {
 		else if ("describe".equals(queryParam)) {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("root", adresar.getRoot());
-			jsonObject.put("changed", adresar.getChanged().toString());
+			jsonObject.put("changed", adresar.getChanged());
 			jsonObject.put("invalidated", adresar.isInvalidated());
 			jsonObject.put("schema", adresar.getSchema());
 			jsonObject.put("readonly", adresar.isReadOnly());

@@ -111,10 +111,10 @@ public enum Data {
 				int nthPlaceholder = 1; // 1-based counting (not an index).
 				PreparedStatement preparedStatement = c.prepareStatement(sql);
 				
-				preparedStatement.setObject(nthPlaceholder++, d.getDate().getTime());
+				preparedStatement.setObject(nthPlaceholder++, d.getChanged());
 				preparedStatement.setObject(nthPlaceholder++, d.isDeleted());
 				preparedStatement.setObject(nthPlaceholder++, d.getData());
-				preparedStatement.setObject(nthPlaceholder++, d.getJson());
+				preparedStatement.setObject(nthPlaceholder++, d.getContent());
 				preparedStatement.executeUpdate();
 				stmts.add(preparedStatement);
 			}
@@ -128,10 +128,10 @@ public enum Data {
 				PreparedStatement preparedStatement = c.prepareStatement(sql);
 			
 				preparedStatement.setObject(nthPlaceholder++, d.getId());
-				preparedStatement.setObject(nthPlaceholder++, d.getDate().getTime());
+				preparedStatement.setObject(nthPlaceholder++, d.getChanged());
 				preparedStatement.setObject(nthPlaceholder++, d.isDeleted());
 				preparedStatement.setObject(nthPlaceholder++, d.getData());
-				preparedStatement.setObject(nthPlaceholder++, d.getJson());
+				preparedStatement.setObject(nthPlaceholder++, d.getContent());
 				preparedStatement.executeUpdate();
 				stmts.add(preparedStatement);
 			}

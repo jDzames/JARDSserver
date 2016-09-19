@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Adresar {
 
 	private String root;
-	private Date changed;
+	private long changed;
 	private boolean invalidated;
 	private String schema;
 	private boolean readOnly;
@@ -32,7 +32,7 @@ public class Adresar {
 			String idGenerator) {
 		super();
 		this.root = root;
-		this.changed = new Date(changed);
+		this.changed = changed;
 		this.invalidated = invalidated;
 		this.schema = schema;
 		this.readOnly = readOnly;
@@ -47,11 +47,11 @@ public class Adresar {
 		this.root = root;
 	}
 
-	public Date getChanged() {
+	public long getChanged() {
 		return changed;
 	}
 
-	public void setChanged(Date changed) {
+	public void setChanged(long changed) {
 		this.changed = changed;
 	}
 

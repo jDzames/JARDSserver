@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +30,7 @@ public class GetDocs {
 		
 		JSONObject json = new JSONObject();
 		json.put("znacka", "mercedes");
-		Document d = new Document(UUID.randomUUID(), 012, false, "mercedes", json);
+		Document d = new Document(UUID.randomUUID(), 10, false, "mercedes", json);
 		listFilt.add(d);
 		listFold.add(d);
 		
@@ -47,6 +48,50 @@ public class GetDocs {
 
 
 	@Path("{folder}/")
+	@GET
+	@Produces("application/json")
+	public Response dataFromFolder(@PathParam("folder") String folder)
+			throws JSONException {
+
+		Adresar adresar = data.docs.get(folder);
+		if (adresar == null) {
+			return Response.status(404).entity("Unknown folder").build();
+		}
+		
+		List<Document> docs = adresar.getDocumentsList();
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("changed", adresar.getChanged());
+		jsonObject.put("invalidated", adresar.isInvalidated());
+		JSONArray jsonData = new JSONArray();
+		for (int i = 0; i < docs.size(); i++) {
+			Document d = docs.get(i);
+			
+			if (d.isDeleted()) {
+				continue;
+			}
+			
+			JSONObject jsonDoc = new JSONObject();
+			jsonDoc.put("id", ""+d.getId());
+			jsonDoc.put("changed", d.getChanged());
+			jsonDoc.put("deleted", d.isDeleted());
+			jsonDoc.put("content", d.getContent());
+			
+			jsonData.put(jsonDoc);
+		}
+		jsonObject.put("documents", jsonData);
+
+		//tie stringy asi este vymazat.
+		String result = /*"@Produces(\"application/json\") Description \n" +*/ ""+jsonObject;
+		return Response.status(200).entity(result).build();
+	}
+
+}
+
+
+/*
+ * STARA VERZIA, NESLO S TYM ROBIT
+ * 
+ * @Path("{folder}/")
 	@GET
 	@Produces("application/json")
 	public Response dataFromFolder(@PathParam("folder") String folder)
@@ -79,8 +124,8 @@ public class GetDocs {
 		jsonObject.put("documents", jsonData);
 
 		//tie stringy asi este vymazat.
-		String result = /*"@Produces(\"application/json\") Description \n" +*/ ""+jsonObject;
+		String result = ""+jsonObject;
 		return Response.status(200).entity(result).build();
 	}
-
-}
+ * */
+ 
